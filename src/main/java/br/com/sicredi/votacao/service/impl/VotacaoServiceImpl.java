@@ -13,6 +13,7 @@ import br.com.sicredi.votacao.service.VotacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,7 +27,13 @@ public class VotacaoServiceImpl implements VotacaoService {
 
 	@Override
 	public Votacao votar(VotacaoDto votacaoDto) {
-		//TO-DO validar horário de votação
+		if(sessaoDeVotacaoExpirada(votacaoDto)){
+			throw new RuntimeException("O horário desta sessão de votação expirou!");
+		}
+
+		if (usuarioJaVotouNestaSessao(votacaoDto)){
+			throw new RuntimeException("O associado já votou nesta sessão!");
+		}
 
 		Sessao sessao = new Sessao(votacaoDto.getSessao().getId());
 		Associado associado = new Associado(votacaoDto.getAssociado().getId());
@@ -34,6 +41,17 @@ public class VotacaoServiceImpl implements VotacaoService {
 
 		Votacao votacao = new Votacao(sessao, associado, voto);
 		return votacaoRepository.save(votacao);
+	}
+
+	private boolean usuarioJaVotouNestaSessao(VotacaoDto votacaoDto) {
+		Associado associado = new Associado(votacaoDto.getAssociado().getId());
+		Sessao sessao = new Sessao(votacaoDto.getSessao().getId());
+		return votacaoRepository.existsByAssociadoAndSessao(associado, sessao);
+	}
+
+	private boolean sessaoDeVotacaoExpirada(VotacaoDto votacaoDto) {
+		Sessao sessao = sessaoRepository.getById(votacaoDto.getSessao().getId());
+		return new Date().getTime() > sessao.getHoraFim().getTime();
 	}
 
 	@Override
