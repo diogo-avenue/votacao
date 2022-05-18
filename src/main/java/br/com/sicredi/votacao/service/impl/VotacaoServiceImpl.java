@@ -10,8 +10,10 @@ import br.com.sicredi.votacao.model.Votacao;
 import br.com.sicredi.votacao.repository.SessaoRepository;
 import br.com.sicredi.votacao.repository.VotacaoRepository;
 import br.com.sicredi.votacao.service.VotacaoService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -27,6 +29,10 @@ public class VotacaoServiceImpl implements VotacaoService {
 
 	@Override
 	public Votacao votar(VotacaoDto votacaoDto) {
+		if(associadoNaoPodeVotar(votacaoDto)){
+			throw new RuntimeException("Associado não possui um CPF válido para essa votação!");
+		}
+
 		if(sessaoDeVotacaoExpirada(votacaoDto)){
 			throw new RuntimeException("O horário desta sessão de votação expirou!");
 		}
@@ -41,6 +47,14 @@ public class VotacaoServiceImpl implements VotacaoService {
 
 		Votacao votacao = new Votacao(sessao, associado, voto);
 		return votacaoRepository.save(votacao);
+	}
+
+	private boolean associadoNaoPodeVotar(VotacaoDto votacaoDto){
+		final String uri = "https://user-info.herokuapp.com/users/" + votacaoDto.getAssociado().getCpf();
+		RestTemplate restTemplate = new RestTemplate();
+		String result = restTemplate.getForObject(uri, String.class);
+		JSONObject jsonObject = new JSONObject(result);
+		return jsonObject.get("status").equals("UNABLE_TO_VOTE");
 	}
 
 	private boolean usuarioJaVotouNestaSessao(VotacaoDto votacaoDto) {
