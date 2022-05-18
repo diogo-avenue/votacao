@@ -19,9 +19,14 @@ public class VotacaoController {
 	private VotacaoService votacaoService;
 
 	@PostMapping( consumes = APPLICATION_JSON_VALUE)
-	public ResponseEntity<Votacao> votar(@RequestBody VotacaoDto votacaoDto) {
-		Votacao votacao = votacaoService.votar(votacaoDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(votacao);
+	public ResponseEntity votar(@RequestBody VotacaoDto votacaoDto) {
+		try{
+			Votacao votacao = votacaoService.votar(votacaoDto);
+			return ResponseEntity.status(HttpStatus.CREATED).body(votacao);
+		} catch (Exception e){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+
 	}
 	
 	@GetMapping(path = "/resultado/{idPauta}")
