@@ -53,4 +53,14 @@ public class ResultadoDto {
 	public void setResultado(String resultado) {
 		this.resultado = resultado;
 	}
+
+	@Override
+	public String toString() {
+		return "ResultadoDto{" +
+				"pauta=" + pauta +
+				", quantidadeVotosSim=" + quantidadeVotosSim +
+				", quantidadeVotosNao=" + quantidadeVotosNao +
+				", resultado='" + resultado + '\'' +
+				'}';
+	}
 }

@@ -29,9 +29,9 @@ public class VotacaoController {
 
 	}
 	
-	@GetMapping(path = "/resultado/{idPauta}")
-	public ResponseEntity<ResultadoDto> obterResultado(@PathVariable(value = "idPauta") int idPauta) {
-			ResultadoDto resultadoDto = votacaoService.obterResultado(idPauta);
+	@GetMapping(path = "/resultado/{idSessao}")
+	public ResponseEntity<ResultadoDto> obterResultado(@PathVariable(value = "idSessao") int idSessao) {
+			ResultadoDto resultadoDto = votacaoService.obterResultado(idSessao);
 			return ResponseEntity.status(HttpStatus.OK).body(resultadoDto);
 	}
 	
