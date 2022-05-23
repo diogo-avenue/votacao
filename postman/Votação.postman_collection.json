@@ -1,0 +1,162 @@
+{
+	"info": {
+		"_postman_id": "793c1b3c-a096-4f0d-8322-3de48cba143e",
+		"name": "Votação",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cadastrar novo Associado",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Diogo Tavares\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/associado",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"associado"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar nova Pauta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"titulo\": \"Construção da churrasqueira\",\r\n    \"descricao\": \"Contrução da churrasqueira dentro da área de eventos\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pauta",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pauta"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar nova Sessão",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pauta\": {\r\n        \"id\": 1\r\n    },\r\n    \"duracao\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/sessao",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"sessao"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Votar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"associado\": {\r\n        \"id\": 1,\r\n        \"cpf\": \"07946872020\"\r\n    },\r\n    \"sessao\": {\r\n        \"id\": 21\r\n    },\r\n    \"voto\": \"SIM\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/votacao",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"votacao"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obter resultado Votação",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/votacao/resultado/20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"votacao",
+						"resultado",
+						"20"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-info.herokuapp",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "user-info.herokuapp.com/users/07946872020",
+					"host": [
+						"user-info",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"07946872020"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
