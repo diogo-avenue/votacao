@@ -73,8 +73,6 @@ public class VotacaoServiceImpl implements VotacaoService {
 		Sessao sessao = sessaoRepository.getById(idSessao);
 		List<Votacao> votos = votacaoRepository.findAllBySessao(sessao);
 		ResultadoDto resultado = new ResultadoDto();
-		Pauta pauta = sessao.getPauta();
-		resultado.setPauta(pauta);
 		resultado.setQuantidadeVotosSim(votos.stream().filter(voto -> voto.getVoto().equals(Voto.SIM)).count());
 		resultado.setQuantidadeVotosNao(votos.stream().filter(voto -> voto.getVoto().equals(Voto.NAO)).count());
 		resultado.setResultado(resultado.getQuantidadeVotosSim() > resultado.getQuantidadeVotosNao() ? "Aprovado" : "Reprovado");

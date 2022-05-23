@@ -1,7 +1,6 @@
 package br.com.sicredi.votacao.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 
 @Entity
@@ -52,5 +51,14 @@ public class Pauta {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	@Override
+	public String toString() {
+		return "Pauta{" +
+				"id=" + id +
+				", titulo='" + titulo + '\'' +
+				", descricao='" + descricao + '\'' +
+				'}';
 	}
 }

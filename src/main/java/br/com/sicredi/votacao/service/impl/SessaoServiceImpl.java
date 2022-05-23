@@ -21,6 +21,9 @@ public class SessaoServiceImpl implements SessaoService {
 	@Autowired
 	private SessaoRepository sessaoRepository;
 
+	@Autowired
+	private KafkaSenderTask kafkaSenderTask;
+
 	@Override
 	public Sessao criarSessao(SessaoDto sessaoDto) {
 
@@ -33,9 +36,11 @@ public class SessaoServiceImpl implements SessaoService {
 
 		Sessao sessao = new Sessao(pauta, tempoInicial, tempoFinal);
 
+		sessao = sessaoRepository.save(sessao);
+
 		agendarEnvioDoResultadoFinal(sessao);
 
-		return sessaoRepository.save(sessao);
+		return sessao;
 	}
 
 	/**
@@ -48,6 +53,6 @@ public class SessaoServiceImpl implements SessaoService {
 	private void agendarEnvioDoResultadoFinal(Sessao sessao) {
 		ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 		long millis = sessao.getHoraFim().getTime() - System.currentTimeMillis();
-		service.schedule(new KafkaSenderTask(sessao.getId()), millis, TimeUnit.MILLISECONDS);
+		service.schedule(kafkaSenderTask.kafkaSenderRunnable(sessao.getId(), sessao.getPauta()), millis, TimeUnit.MILLISECONDS);
 	}
 }

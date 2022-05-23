@@ -1,32 +1,30 @@
 package br.com.sicredi.votacao.task;
 
 import br.com.sicredi.votacao.dto.ResultadoDto;
+import br.com.sicredi.votacao.model.Pauta;
 import br.com.sicredi.votacao.service.VotacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
-public class KafkaSenderTask implements Runnable{
+@Service
+public class KafkaSenderTask {
 
     @Autowired
     private VotacaoService votacaoService;
 
-    private int idSessao;
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
-    public KafkaSenderTask(int idSessao) {
-        this.idSessao = idSessao;
+    public Runnable kafkaSenderRunnable (int idSessao, Pauta pauta){
+        return new Runnable() {
+            @Override
+            public void run() {
+                ResultadoDto resultadoDto = votacaoService.obterResultado(idSessao);
+                resultadoDto.setPauta(pauta);
+                kafkaTemplate.send("resultado-votacao", resultadoDto.toString());
+            }
+        };
     }
 
-    public int getIdSessao() {
-        return idSessao;
-    }
-
-    public void setIdSessao(int idSessao) {
-        this.idSessao = idSessao;
-    }
-
-    @Override
-    public void run() {
-        ResultadoDto resultadoDto = votacaoService.obterResultado(idSessao);
-        //TODO Publish resultadoDto in a kakfa queue.
-        System.out.println(resultadoDto);
-    }
 }
