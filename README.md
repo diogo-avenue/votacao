@@ -65,3 +65,8 @@ Desejamos uma boa prova e qualquer dúvida.
   Sicredi 
 
   Cooperativa de Crédito
+
+# Rodando a aplicação
+
+* Na pasta /docker execute docker-compose up
+* Execute VotacaoApplication.java
