@@ -21,7 +21,6 @@ public class KafkaSenderTask {
             @Override
             public void run() {
                 ResultadoDto resultadoDto = votacaoService.obterResultado(idSessao);
-                resultadoDto.setPauta(pauta);
                 kafkaTemplate.send("resultado-votacao", resultadoDto.toString());
             }
         };

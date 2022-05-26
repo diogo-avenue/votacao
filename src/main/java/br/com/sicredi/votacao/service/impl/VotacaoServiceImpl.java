@@ -7,6 +7,7 @@ import br.com.sicredi.votacao.model.Associado;
 import br.com.sicredi.votacao.model.Pauta;
 import br.com.sicredi.votacao.model.Sessao;
 import br.com.sicredi.votacao.model.Votacao;
+import br.com.sicredi.votacao.repository.PautaRepository;
 import br.com.sicredi.votacao.repository.SessaoRepository;
 import br.com.sicredi.votacao.repository.VotacaoRepository;
 import br.com.sicredi.votacao.service.VotacaoService;
@@ -27,6 +28,8 @@ public class VotacaoServiceImpl implements VotacaoService {
 	@Autowired
 	private SessaoRepository sessaoRepository;
 
+	@Autowired
+	private PautaRepository pautaRepository;
 	@Override
 	public Votacao votar(VotacaoDto votacaoDto) {
 		if(associadoNaoPodeVotar(votacaoDto)){
@@ -72,7 +75,10 @@ public class VotacaoServiceImpl implements VotacaoService {
 	public ResultadoDto obterResultado(int idSessao) {
 		Sessao sessao = sessaoRepository.getById(idSessao);
 		List<Votacao> votos = votacaoRepository.findAllBySessao(sessao);
+		Pauta pauta = pautaRepository.getPautaByIdSessao(sessao.getId());
 		ResultadoDto resultado = new ResultadoDto();
+		resultado.setIdSessao(idSessao);
+		resultado.setPauta(pauta);
 		resultado.setQuantidadeVotosSim(votos.stream().filter(voto -> voto.getVoto().equals(Voto.SIM)).count());
 		resultado.setQuantidadeVotosNao(votos.stream().filter(voto -> voto.getVoto().equals(Voto.NAO)).count());
 		resultado.setResultado(resultado.getQuantidadeVotosSim() > resultado.getQuantidadeVotosNao() ? "Aprovado" : "Reprovado");

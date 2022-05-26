@@ -4,6 +4,8 @@ import br.com.sicredi.votacao.model.Pauta;
 
 public class ResultadoDto {
 
+	private int idSessao;
+
 	private Pauta pauta;
 
 	private long quantidadeVotosSim;
@@ -15,7 +17,8 @@ public class ResultadoDto {
 	public ResultadoDto() {
 	}
 
-	public ResultadoDto(Pauta pauta, long quantidadeVotosSim, long quantidadeVotosNao, String resultado) {
+	public ResultadoDto(int idSessao, Pauta pauta, long quantidadeVotosSim, long quantidadeVotosNao, String resultado) {
+		this.idSessao = idSessao;
 		this.pauta = pauta;
 		this.quantidadeVotosSim = quantidadeVotosSim;
 		this.quantidadeVotosNao = quantidadeVotosNao;
@@ -50,6 +53,14 @@ public class ResultadoDto {
 		return resultado;
 	}
 
+	public int getIdSessao() {
+		return idSessao;
+	}
+
+	public void setIdSessao(int idSessao) {
+		this.idSessao = idSessao;
+	}
+
 	public void setResultado(String resultado) {
 		this.resultado = resultado;
 	}
@@ -57,7 +68,8 @@ public class ResultadoDto {
 	@Override
 	public String toString() {
 		return "ResultadoDto{" +
-				"pauta=" + pauta +
+				"idSessao=" + idSessao +
+				", pauta=" + pauta +
 				", quantidadeVotosSim=" + quantidadeVotosSim +
 				", quantidadeVotosNao=" + quantidadeVotosNao +
 				", resultado='" + resultado + '\'' +
