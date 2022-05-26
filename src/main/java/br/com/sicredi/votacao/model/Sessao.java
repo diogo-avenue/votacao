@@ -66,4 +66,14 @@ public class Sessao {
 	public void setHoraFim(Timestamp horaFim) {
 		this.horaFim = horaFim;
 	}
+
+	@Override
+	public String toString() {
+		return "Sessao{" +
+				"id=" + id +
+				", pauta=" + pauta +
+				", horaInicio=" + horaInicio +
+				", horaFim=" + horaFim +
+				'}';
+	}
 }
